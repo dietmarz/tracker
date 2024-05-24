@@ -1,0 +1,10 @@
+= Tracker Frontend
+
+== Setup
+[source, bash]
+.Initial
+----
+npm create vite@latest frontend # Only once
+npm install # Once per checkout
+npm run dev # Once per dev session
+----
