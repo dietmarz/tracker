@@ -5,6 +5,15 @@
 .Initial
 ----
 npm create vite@latest frontend # Only once
+npm install react-router-dom
 npm install # Once per checkout
 npm run dev # Once per dev session
 ----
+
+== List componente
+* Spalten: ID:number, Description:string, Interval:number, Url:string, XPath:string, Screenhot:boolean, Button-Block pro zeile
+(Edit, Delete, View)
+* Unter der Tabelle noch einen Create button, der auf die Create Componente verweist. Dort kann man all die Werte angeben.
+Kannst Du mir die zwei Komponten bauen, und zwar geht es zur list componente wenn User admin passwort admin eingegeben und
+login gedrückt wurde. Kannst du die list componente mit dummy daten befüllen, so das ich das später leicht gegen einen call
+austauschen kann
