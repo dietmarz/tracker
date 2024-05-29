@@ -1,5 +1,18 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
+import {
+    Container,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    Paper,
+    Button,
+    Box,
+    Typography
+} from '@mui/material';
 
 const List: React.FC = () => {
     const data = [
@@ -9,39 +22,56 @@ const List: React.FC = () => {
     ];
 
     return (
-        <div>
-            <table>
-                <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Description</th>
-                    <th>Interval</th>
-                    <th>Url</th>
-                    <th>XPath</th>
-                    <th>Screenshot</th>
-                    <th>Actions</th>
-                </tr>
-                </thead>
-                <tbody>
-                {data.map((item) => (
-                    <tr key={item.ID}>
-                        <td>{item.ID}</td>
-                        <td>{item.Description}</td>
-                        <td>{item.Interval}</td>
-                        <td>{item.Url}</td>
-                        <td>{item.XPath}</td>
-                        <td>{item.Screenshot ? 'Yes' : 'No'}</td>
-                        <td>
-                            <button>Edit</button>
-                            <button>Delete</button>
-                            <button>View</button>
-                        </td>
-                    </tr>
-                ))}
-                </tbody>
-            </table>
-            <Link to="/create"><button>Create</button></Link>
-        </div>
+        <Container>
+            <Box mt={5} mb={2}>
+                <Typography variant="h4" gutterBottom>
+                    Item List
+                </Typography>
+            </Box>
+            <TableContainer component={Paper}>
+                <Table>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>ID</TableCell>
+                            <TableCell>Description</TableCell>
+                            <TableCell>Interval</TableCell>
+                            <TableCell>Url</TableCell>
+                            <TableCell>XPath</TableCell>
+                            <TableCell>Screenshot</TableCell>
+                            <TableCell>Actions</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {data.map((item) => (
+                            <TableRow key={item.ID}>
+                                <TableCell>{item.ID}</TableCell>
+                                <TableCell>{item.Description}</TableCell>
+                                <TableCell>{item.Interval}</TableCell>
+                                <TableCell>{item.Url}</TableCell>
+                                <TableCell>{item.XPath}</TableCell>
+                                <TableCell>{item.Screenshot ? 'Yes' : 'No'}</TableCell>
+                                <TableCell>
+                                    <Button variant="contained" size="small" style={{ marginRight: 8 }}>
+                                        Edit
+                                    </Button>
+                                    <Button variant="contained" size="small" style={{ marginRight: 8 }}>
+                                        Delete
+                                    </Button>
+                                    <Button variant="contained" size="small">
+                                        View
+                                    </Button>
+                                </TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+            <Box mt={2}>
+                <Button component={Link} to="/create" variant="contained" color="primary" >
+                    Create
+                </Button>
+            </Box>
+        </Container>
     );
 };
 
