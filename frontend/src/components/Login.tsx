@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {useState, ChangeEvent, useEffect} from 'react';
+import {useState, ChangeEvent, useEffect, useRef} from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Container, TextField, Button, Typography, Box } from '@mui/material';
 
@@ -7,6 +7,7 @@ const Login: React.FC = () => {
     const [userName, setUserName] = useState<string>('admin');
     const [password, setPassword] = useState<string>('admin');
     const navigate = useNavigate();
+    const userNameRef = useRef<HTMLInputElement | null>(null);
 
     const handleLoginButton = () => {
         if (userName === 'admin' && password === 'admin') {
@@ -23,6 +24,9 @@ const Login: React.FC = () => {
     };
 
     useEffect(() => {
+        if(userNameRef.current) {
+            userNameRef.current.focus();
+        }
         window.addEventListener('keydown', handleGlobalKeyPress);
         return () => {
             window.removeEventListener('keydown', handleGlobalKeyPress);
@@ -36,6 +40,7 @@ const Login: React.FC = () => {
                     Login
                 </Typography>
                 <TextField
+                    inputRef={userNameRef}
                     label="Username"
                     fullWidth
                     margin="normal"
