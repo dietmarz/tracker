@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState, ChangeEvent } from 'react';
+import {useState, ChangeEvent, useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Container, TextField, Button, Typography, Box } from '@mui/material';
 
@@ -15,6 +15,19 @@ const Login: React.FC = () => {
             alert('Invalid username or password');
         }
     };
+
+    const handleGlobalKeyPress = (event: KeyboardEvent) => {
+        if (event.key === 'Enter') {
+            handleLoginButton();
+        }
+    };
+
+    useEffect(() => {
+        window.addEventListener('keydown', handleGlobalKeyPress);
+        return () => {
+            window.removeEventListener('keydown', handleGlobalKeyPress);
+        };
+    }, [userName, password]);
 
     return (
         <Container maxWidth="xs">
