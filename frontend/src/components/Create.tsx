@@ -11,14 +11,16 @@ import {
     Checkbox
 } from '@mui/material';
 
+import {Item} from './List.tsx'
+
 const Create: React.FC = () => {
-    const [formData, setFormData] = useState({
-        ID: 0,
-        Description: '',
-        Interval: 0,
-        Url: '',
-        XPath: '',
-        Screenshot: false,
+    const [formData, setFormData] = useState<Item>({
+        id: 0,
+        description: '',
+        interval: 0,
+        url: '',
+        xpath: '',
+        screenshot: false,
     });
     const navigate = useNavigate();
 
@@ -48,7 +50,7 @@ const Create: React.FC = () => {
                     fullWidth
                     margin="normal"
                     name="ID"
-                    value={formData.ID}
+                    value={formData.id}
                     onChange={handleChange}
                 />
                 <TextField
@@ -56,7 +58,7 @@ const Create: React.FC = () => {
                     fullWidth
                     margin="normal"
                     name="Description"
-                    value={formData.Description}
+                    value={formData.description}
                     onChange={handleChange}
                 />
                 <TextField
@@ -65,7 +67,7 @@ const Create: React.FC = () => {
                     fullWidth
                     margin="normal"
                     name="Interval"
-                    value={formData.Interval}
+                    value={formData.interval}
                     onChange={handleChange}
                 />
                 <TextField
@@ -73,7 +75,7 @@ const Create: React.FC = () => {
                     fullWidth
                     margin="normal"
                     name="Url"
-                    value={formData.Url}
+                    value={formData.url}
                     onChange={handleChange}
                 />
                 <TextField
@@ -81,13 +83,13 @@ const Create: React.FC = () => {
                     fullWidth
                     margin="normal"
                     name="XPath"
-                    value={formData.XPath}
+                    value={formData.xpath}
                     onChange={handleChange}
                 />
                 <FormControlLabel
                     control={
                         <Checkbox
-                            checked={formData.Screenshot}
+                            checked={formData.screenshot}
                             onChange={handleChange}
                             name="Screenshot"
                             color="primary"

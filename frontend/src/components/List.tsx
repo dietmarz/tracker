@@ -14,10 +14,19 @@ import {
     Typography
 } from '@mui/material';
 
+export interface Item {
+    id: number;
+    description: string;
+    interval:number;
+    url:string;
+    xpath:string;
+    screenshot:boolean;
+}
+
 const List: React.FC = () => {
-    const data = [
-        { ID: 1, Description: 'First item', Interval: 10, Url: 'http://example.com', XPath: '/html/body', Screenshot: true },
-        { ID: 2, Description: 'Second item', Interval: 20, Url: 'http://example.com', XPath: '/html/body/div', Screenshot: false },
+    const data: Item[] = [
+        { id: 1, description: 'First item',  interval: 10, url: 'http://example.com', xpath: '/html/body', screenshot: true },
+        { id: 2, description: 'Second item', interval: 20, url: 'http://example.com', xpath: '/html/body/div', screenshot: false },
         // Weitere Dummy-Daten können hier hinzugefügt werden
     ];
 
@@ -43,23 +52,23 @@ const List: React.FC = () => {
                     </TableHead>
                     <TableBody>
                         {data.map((item) => (
-                            <TableRow key={item.ID}>
-                                <TableCell>{item.ID}</TableCell>
-                                <TableCell>{item.Description}</TableCell>
-                                <TableCell>{item.Interval}</TableCell>
-                                <TableCell>{item.Url}</TableCell>
-                                <TableCell>{item.XPath}</TableCell>
-                                <TableCell>{item.Screenshot ? 'Yes' : 'No'}</TableCell>
+                            <TableRow key={item.id}>
+                                <TableCell>{item.id}</TableCell>
+                                <TableCell>{item.description}</TableCell>
+                                <TableCell>{item.interval}</TableCell>
+                                <TableCell>{item.url}</TableCell>
+                                <TableCell>{item.xpath}</TableCell>
+                                <TableCell>{item.screenshot ? 'Yes' : 'No'}</TableCell>
                                 <TableCell>
-                                    <Button variant="contained" size="small" style={{ marginRight: 8 }}>
-                                        Edit
-                                    </Button>
-                                    <Button variant="contained" size="small" style={{ marginRight: 8 }}>
-                                        Delete
-                                    </Button>
-                                    <Button variant="contained" size="small">
-                                        View
-                                    </Button>
+                                    {/*<Button variant="contained" size="small" style={{ marginRight: 8 }}>*/}
+                                    {/*    Edit*/}
+                                    {/*</Button>*/}
+                                    {/*<Button variant="contained" size="small" style={{ marginRight: 8 }}>*/}
+                                    {/*    Delete*/}
+                                    {/*</Button>*/}
+                                    {/*<Button variant="contained" size="small">*/}
+                                    {/*    View*/}
+                                    {/*</Button>*/}
                                 </TableCell>
                             </TableRow>
                         ))}

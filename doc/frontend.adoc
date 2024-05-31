@@ -8,6 +8,8 @@ npm create vite@latest frontend # Only once
 npm install react-router-dom
 npm install # Once per checkout
 npm run dev # Once per dev session
+
+npm outdated
 ----
 
 == List componente
