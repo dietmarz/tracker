@@ -10,8 +10,9 @@ import {
     FormControlLabel,
     Checkbox
 } from '@mui/material';
+import {Item} from "../model/Item.ts";
 
-import {Item} from './List.tsx'
+
 
 const Create: React.FC = () => {
     const [formData, setFormData] = useState<Item>({

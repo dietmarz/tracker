@@ -13,15 +13,7 @@ import {
     Box,
     Typography
 } from '@mui/material';
-
-export interface Item {
-    id: number;
-    description: string;
-    interval:number;
-    url:string;
-    xpath:string;
-    screenshot:boolean;
-}
+import {Item} from "../model/Item.ts";
 
 const List: React.FC = () => {
     const data: Item[] = [
