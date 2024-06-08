@@ -10,10 +10,8 @@ import {
     FormControlLabel,
     Checkbox
 } from '@mui/material';
-import {Item} from "../model/Item.ts";
-import {initialState} from "../store/track-slice.ts";
-
-
+import { Item } from "../model/Item.ts";
+import { initialState } from "../store/track-slice.ts";
 
 const Create: React.FC = () => {
     const [formData, setFormData] = useState<Item>(initialState);
@@ -44,7 +42,7 @@ const Create: React.FC = () => {
                     type="number"
                     fullWidth
                     margin="normal"
-                    name="ID"
+                    name="id"
                     value={formData.id}
                     onChange={handleChange}
                 />
@@ -52,7 +50,7 @@ const Create: React.FC = () => {
                     label="Description"
                     fullWidth
                     margin="normal"
-                    name="Description"
+                    name="description"
                     value={formData.description}
                     onChange={handleChange}
                 />
@@ -61,7 +59,7 @@ const Create: React.FC = () => {
                     type="number"
                     fullWidth
                     margin="normal"
-                    name="Interval"
+                    name="interval"
                     value={formData.interval}
                     onChange={handleChange}
                 />
@@ -69,7 +67,7 @@ const Create: React.FC = () => {
                     label="Url"
                     fullWidth
                     margin="normal"
-                    name="Url"
+                    name="url"
                     value={formData.url}
                     onChange={handleChange}
                 />
@@ -77,7 +75,7 @@ const Create: React.FC = () => {
                     label="XPath"
                     fullWidth
                     margin="normal"
-                    name="XPath"
+                    name="xpath"
                     value={formData.xpath}
                     onChange={handleChange}
                 />
@@ -86,7 +84,7 @@ const Create: React.FC = () => {
                         <Checkbox
                             checked={formData.screenshot}
                             onChange={handleChange}
-                            name="Screenshot"
+                            name="screenshot"
                             color="primary"
                         />
                     }
