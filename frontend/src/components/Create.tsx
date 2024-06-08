@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import {
     Container,
     TextField,
@@ -12,21 +12,46 @@ import {
 } from '@mui/material';
 import { Item, initialState } from "../model/Item.ts";
 
-const Create: React.FC = () => {
+interface CreateProps {
+    mode?: 'create' | 'edit' | 'view';
+}
+
+const Create: React.FC<CreateProps> = ({ mode = 'create' }) => {
     const [formData, setFormData] = useState<Item>(initialState);
     const navigate = useNavigate();
+    const { id } = useParams<{ id: string }>();
+    const location = useLocation();
+    const isViewMode = mode === 'view';
+
+    useEffect(() => {
+        if (mode === 'edit' || mode === 'view') {
+            // Fetch the data for the given ID and populate the form (simulated here with dummy data)
+            const fetchData = async () => {
+                const data = await getDataById(id); // Replace with your data fetching logic
+                setFormData(data);
+            };
+            fetchData();
+        }
+    }, [id, mode]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value, type, checked } = e.target;
-        setFormData({
-            ...formData,
-            [name]: type === 'checkbox' ? checked : value,
-        });
+        if (!isViewMode) {
+            setFormData({
+                ...formData,
+                [name]: type === 'checkbox' ? checked : value,
+            });
+        }
     };
 
     const handleSubmit = () => {
-        // Hier können Sie den API-Call implementieren, um die Daten zu speichern
-        console.log('Form data submitted:', formData);
+        if (mode === 'create') {
+            // Implement API call to create data
+            console.log('Form data created:', formData);
+        } else if (mode === 'edit') {
+            // Implement API call to update data
+            console.log('Form data updated:', formData);
+        }
         navigate('/list');
     };
 
@@ -34,7 +59,7 @@ const Create: React.FC = () => {
         <Container maxWidth="sm">
             <Box mt={5}>
                 <Typography variant="h4" gutterBottom>
-                    Create Item
+                    {mode.charAt(0).toUpperCase() + mode.slice(1)} Item
                 </Typography>
                 <TextField
                     label="ID"
@@ -44,6 +69,7 @@ const Create: React.FC = () => {
                     name="id"
                     value={formData.id}
                     onChange={handleChange}
+                    disabled={isViewMode}
                 />
                 <TextField
                     label="Description"
@@ -52,6 +78,7 @@ const Create: React.FC = () => {
                     name="description"
                     value={formData.description}
                     onChange={handleChange}
+                    disabled={isViewMode}
                 />
                 <TextField
                     label="Interval"
@@ -61,6 +88,7 @@ const Create: React.FC = () => {
                     name="interval"
                     value={formData.interval}
                     onChange={handleChange}
+                    disabled={isViewMode}
                 />
                 <TextField
                     label="Url"
@@ -69,6 +97,7 @@ const Create: React.FC = () => {
                     name="url"
                     value={formData.url}
                     onChange={handleChange}
+                    disabled={isViewMode}
                 />
                 <TextField
                     label="XPath"
@@ -77,6 +106,7 @@ const Create: React.FC = () => {
                     name="xpath"
                     value={formData.xpath}
                     onChange={handleChange}
+                    disabled={isViewMode}
                 />
                 <FormControlLabel
                     control={
@@ -85,18 +115,34 @@ const Create: React.FC = () => {
                             onChange={handleChange}
                             name="screenshot"
                             color="primary"
+                            disabled={isViewMode}
                         />
                     }
                     label="Screenshot"
                 />
-                <Box mt={2}>
-                    <Button variant="contained" color="primary" fullWidth onClick={handleSubmit}>
-                        Submit
-                    </Button>
-                </Box>
+                {!isViewMode && (
+                    <Box mt={2}>
+                        <Button variant="contained" color="primary" fullWidth onClick={handleSubmit}>
+                            Submit
+                        </Button>
+                    </Box>
+                )}
             </Box>
         </Container>
     );
+};
+
+// Dummy function to simulate data fetching
+const getDataById = async (id: string | undefined): Promise<Item> => {
+    // Replace with your actual data fetching logic
+    return {
+        id: parseInt(id || '0'),
+        description: 'Sample description',
+        interval: 10,
+        url: 'http://example.com',
+        xpath: '/html/body',
+        screenshot: true,
+    };
 };
 
 export default Create;

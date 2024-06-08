@@ -1,5 +1,5 @@
 export interface Item {
-    id?: number;
+    id: number;
     description: string;
     interval:number;
     url:string;
@@ -8,6 +8,7 @@ export interface Item {
 }
 
 export const initialState: Item = {
+    id: 0,
     description: '',
     interval: 0,
     url: '',

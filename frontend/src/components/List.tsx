@@ -52,13 +52,28 @@ const List: React.FC = () => {
                                 <TableCell>{item.xpath}</TableCell>
                                 <TableCell>{item.screenshot ? 'Yes' : 'No'}</TableCell>
                                 <TableCell>
-                                    <Button variant="contained" size="small" style={{ marginRight: 8 }}>
+                                    <Button
+                                        component={Link}
+                                        to={`/edit/${item.id}`}
+                                        variant="contained"
+                                        size="small"
+                                        style={{ marginRight: 8 }}
+                                    >
                                         Edit
                                     </Button>
-                                    <Button variant="contained" size="small" style={{ marginRight: 8 }}>
+                                    <Button
+                                        variant="contained"
+                                        size="small"
+                                        style={{ marginRight: 8 }}
+                                    >
                                         Delete
                                     </Button>
-                                    <Button variant="contained" size="small">
+                                    <Button
+                                        component={Link}
+                                        to={`/view/${item.id}`}
+                                        variant="contained"
+                                        size="small"
+                                    >
                                         View
                                     </Button>
                                 </TableCell>

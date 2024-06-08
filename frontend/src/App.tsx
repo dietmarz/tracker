@@ -20,7 +20,10 @@ function App() {
                 <Routes>
                     <Route path="/" element={<Login />} />
                     <Route path="/list" element={<List />} />
+                    <Route path="/edit/:id" element={<Create mode="edit" />} />
+                    <Route path="/view/:id" element={<Create mode="view" />} />
                     <Route path="/create" element={<Create />} />
+                    <Route path="/" element={<List />} />
                     <Route path="*" element={<Navigate to="/" />} />
                 </Routes>
             </Router>
