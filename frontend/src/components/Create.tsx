@@ -10,8 +10,7 @@ import {
     FormControlLabel,
     Checkbox
 } from '@mui/material';
-import { Item } from "../model/Item.ts";
-import { initialState } from "../store/track-slice.ts";
+import { Item, initialState } from "../model/Item.ts";
 
 const Create: React.FC = () => {
     const [formData, setFormData] = useState<Item>(initialState);
