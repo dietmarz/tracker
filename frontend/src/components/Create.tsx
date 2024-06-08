@@ -11,18 +11,12 @@ import {
     Checkbox
 } from '@mui/material';
 import {Item} from "../model/Item.ts";
+import {initialState} from "../store/track-slice.ts";
 
 
 
 const Create: React.FC = () => {
-    const [formData, setFormData] = useState<Item>({
-        id: 0,
-        description: '',
-        interval: 0,
-        url: '',
-        xpath: '',
-        screenshot: false,
-    });
+    const [formData, setFormData] = useState<Item>(initialState);
     const navigate = useNavigate();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
