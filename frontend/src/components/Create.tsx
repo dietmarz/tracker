@@ -11,6 +11,7 @@ import {
     Checkbox
 } from '@mui/material';
 import { Item, initialState } from "../model/Item.ts";
+import ItemService from "../service/ItemService.ts";
 
 interface CreateProps {
     mode?: 'create' | 'edit' | 'view';
@@ -140,15 +141,7 @@ const Create: React.FC<CreateProps> = ({ mode = 'create' }) => {
 
 // Dummy function to simulate data fetching
 const getDataById = async (id: string | undefined): Promise<Item> => {
-    // Replace with your actual data fetching logic
-    return {
-        id: parseInt(id || '0'),
-        description: 'Sample description',
-        interval: 10,
-        url: 'http://example.com',
-        xpath: '/html/body',
-        screenshot: true,
-    };
+    return ItemService.getItemById(id);
 };
 
 export default Create;

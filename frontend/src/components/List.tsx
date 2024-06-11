@@ -16,15 +16,20 @@ import {
 import { Item } from "../model/Item.ts";
 import DeleteDialog from './DeleteDialog.tsx';
 import ItemService from "../service/ItemService.ts";
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 
 const List: React.FC = () => {
-    const [open, setOpenDeleteDialog] = React.useState(false);
-    const [selectedItem, setSelectedItem] = React.useState<Item | null>(null);
+    const [open, setOpenDeleteDialog] = useState(false);
+    const [selectedItem, setSelectedItem] = useState<Item | null>(null);
     const [items, setItems] = useState<Item[]>([]);
 
     useEffect(() => {
-        setItems(ItemService.getAllItems());
+        const fetchItems = async () => {
+            const fetchedItems = await ItemService.getAllItems();
+            setItems(fetchedItems);
+        };
+
+        fetchItems();
     }, []);
 
     const handleOpenDeleteDialog = (item: Item) => {
@@ -37,10 +42,20 @@ const List: React.FC = () => {
         setSelectedItem(null);
     };
 
-    const handleDelete = (id: number) => {
-        ItemService.deleteItem(id);
-    };
 
+    const handleDelete = async (id: number) => {
+        const isDeleted = await ItemService.deleteItem(id);
+        if (isDeleted) {
+            const fetchedItems = await ItemService.getAllItems();
+            console.log("Anzahl: ", fetchedItems.length);
+
+
+
+            // setItems(prevItems => prevItems.filter(item => item.id !== id));
+            setItems(fetchedItems);
+        }
+        handleCloseDeleteDialog();
+    };
 
     return (
         <Container>
@@ -112,7 +127,7 @@ const List: React.FC = () => {
                 open={open}
                 item={selectedItem}
                 onClose={handleCloseDeleteDialog}
-                onDelete={handleDelete}
+                onDelete={() => handleDelete(selectedItem!.id)}
             />
         </Container>
     );
