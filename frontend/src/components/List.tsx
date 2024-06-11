@@ -13,14 +13,34 @@ import {
     Box,
     Typography
 } from '@mui/material';
-import {Item} from "../model/Item.ts";
+import { Item } from "../model/Item.ts";
+import DeleteDialog from './DeleteDialog.tsx';
+import ItemService from "../service/ItemService.ts";
+import {useEffect, useState} from "react";
 
 const List: React.FC = () => {
-    const data: Item[] = [
-        { id: 1, description: 'First item',  interval: 10, url: 'http://example.com', xpath: '/html/body', screenshot: true },
-        { id: 2, description: 'Second item', interval: 20, url: 'http://example.com', xpath: '/html/body/div', screenshot: false },
-        // Weitere Dummy-Daten können hier hinzugefügt werden
-    ];
+    const [open, setOpenDeleteDialog] = React.useState(false);
+    const [selectedItem, setSelectedItem] = React.useState<Item | null>(null);
+    const [items, setItems] = useState<Item[]>([]);
+
+    useEffect(() => {
+        setItems(ItemService.getAllItems());
+    }, []);
+
+    const handleOpenDeleteDialog = (item: Item) => {
+        setSelectedItem(item);
+        setOpenDeleteDialog(true);
+    };
+
+    const handleCloseDeleteDialog = () => {
+        setOpenDeleteDialog(false);
+        setSelectedItem(null);
+    };
+
+    const handleDelete = (id: number) => {
+        ItemService.deleteItem(id);
+    };
+
 
     return (
         <Container>
@@ -43,7 +63,7 @@ const List: React.FC = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {data.map((item) => (
+                        {items.map((item) => (
                             <TableRow key={item.id}>
                                 <TableCell>{item.id}</TableCell>
                                 <TableCell>{item.description}</TableCell>
@@ -65,6 +85,7 @@ const List: React.FC = () => {
                                         variant="contained"
                                         size="small"
                                         style={{ marginRight: 8 }}
+                                        onClick={() => handleOpenDeleteDialog(item)}
                                     >
                                         Delete
                                     </Button>
@@ -83,10 +104,16 @@ const List: React.FC = () => {
                 </Table>
             </TableContainer>
             <Box mt={2}>
-                <Button component={Link} to="/create" variant="contained" color="primary" >
+                <Button component={Link} to="/create" variant="contained" color="primary">
                     Create
                 </Button>
             </Box>
+            <DeleteDialog
+                open={open}
+                item={selectedItem}
+                onClose={handleCloseDeleteDialog}
+                onDelete={handleDelete}
+            />
         </Container>
     );
 };

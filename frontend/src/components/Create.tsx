@@ -24,12 +24,18 @@ const Create: React.FC<CreateProps> = ({ mode = 'create' }) => {
     const isViewMode = mode === 'view';
 
     useEffect(() => {
-        if (mode === 'edit' || mode === 'view') {
-            // Fetch the data for the given ID and populate the form (simulated here with dummy data)
-            const fetchData = async () => {
-                const data = await getDataById(id); // Replace with your data fetching logic
+        const fetchData = async () => {
+            try {
+                console.log('Fetching data for ID:', id);
+                const data = await getDataById(id);
+                console.log('Data fetched successfully:', data);
                 setFormData(data);
-            };
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        if (mode === 'edit' || mode === 'view') {
             fetchData();
         }
     }, [id, mode]);
