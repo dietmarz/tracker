@@ -15,44 +15,42 @@ import {
 } from '@mui/material';
 import { Item } from "../model/Item.ts";
 import DeleteDialog from './DeleteDialog.tsx';
-import ItemService from "../service/ItemService.ts";
-import { useEffect, useState } from "react";
+import itemService from "../service/ItemService.ts";
+import logService  from "../service/LogService.ts";
+import { useEffect, useState, useCallback } from "react";
 
 const List: React.FC = () => {
-    const [open, setOpenDeleteDialog] = useState(false);
+    const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
     const [selectedItem, setSelectedItem] = useState<Item | null>(null);
     const [items, setItems] = useState<Item[]>([]);
 
-    useEffect(() => {
-        const fetchItems = async () => {
-            const fetchedItems = await ItemService.getAllItems();
-            setItems(fetchedItems);
-        };
-
-        fetchItems();
+    const fetchItems = useCallback(async () => {
+        const items = await itemService.getAllItems();
+        logService.debug("Fetched " + items.length + " Items.");
+        setItems(items);
     }, []);
+
+    useEffect(() => {
+        fetchItems();
+    }, [fetchItems]);
 
     const handleOpenDeleteDialog = (item: Item) => {
         setSelectedItem(item);
         setOpenDeleteDialog(true);
     };
 
-    const handleCloseDeleteDialog = () => {
+    const handleCloseDeleteDialog = async () => {
         setOpenDeleteDialog(false);
         setSelectedItem(null);
     };
 
-
     const handleDelete = async (id: number) => {
-        const isDeleted = await ItemService.deleteItem(id);
+        const isDeleted = await itemService.deleteItem(id);
         if (isDeleted) {
-            const fetchedItems = await ItemService.getAllItems();
-            console.log("Anzahl: ", fetchedItems.length);
-
-
-
-            // setItems(prevItems => prevItems.filter(item => item.id !== id));
-            setItems(fetchedItems);
+            logService.debug(`Deleted item with ID: ${id}`);
+            await fetchItems();  // Aktualisieren der Items nach dem Löschen
+        } else {
+            logService.debug(`Failed to delete item with ID: ${id}`);
         }
         handleCloseDeleteDialog();
     };
@@ -124,7 +122,7 @@ const List: React.FC = () => {
                 </Button>
             </Box>
             <DeleteDialog
-                open={open}
+                open={openDeleteDialog}
                 item={selectedItem}
                 onClose={handleCloseDeleteDialog}
                 onDelete={() => handleDelete(selectedItem!.id)}

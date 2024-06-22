@@ -12,8 +12,6 @@ interface DeleteDialogProps {
 const DeleteDialog: React.FC<DeleteDialogProps> = ({ open, item, onClose, onDelete }) => {
     const handleDelete = () => {
         if (item) {
-            // Dummy delete call
-            console.log(`Deleting item with id: ${item.id} and description: ${item.description}`);
             onDelete(item.id);
         }
         onClose();

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { useNavigate, useParams, useLocation } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import {
     Container,
     TextField,
@@ -21,14 +21,14 @@ const Create: React.FC<CreateProps> = ({ mode = 'create' }) => {
     const [formData, setFormData] = useState<Item>(initialState);
     const navigate = useNavigate();
     const { id } = useParams<{ id: string }>();
-    const location = useLocation();
     const isViewMode = mode === 'view';
 
     useEffect(() => {
         const fetchData = async () => {
             try {
+
                 console.log('Fetching data for ID:', id);
-                const data = await getDataById(id);
+                const data = await getDataById(Number(id));
                 console.log('Data fetched successfully:', data);
                 setFormData(data);
             } catch (error) {
@@ -42,11 +42,12 @@ const Create: React.FC<CreateProps> = ({ mode = 'create' }) => {
     }, [id, mode]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        const { name, value, type, checked } = e.target;
+        const { name, value, type } = e.target;
+        const newValue = type === 'checkbox' ? (e.target as HTMLInputElement).checked : value;
         if (!isViewMode) {
             setFormData({
                 ...formData,
-                [name]: type === 'checkbox' ? checked : value,
+                [name]: newValue,
             });
         }
     };
@@ -140,7 +141,7 @@ const Create: React.FC<CreateProps> = ({ mode = 'create' }) => {
 };
 
 // Dummy function to simulate data fetching
-const getDataById = async (id: string | undefined): Promise<Item> => {
+const getDataById = async (id: number): Promise<Item> => {
     return ItemService.getItemById(id);
 };
 

@@ -6,6 +6,7 @@ import List from './components/List';
 import Create from './components/Create';
 import './App.css';
 import {Theme} from "@emotion/react";
+import LogBox from "./components/LogBox.tsx";
 
 const theme : Theme = createTheme({
     palette: {
@@ -27,6 +28,7 @@ function App() {
                     <Route path="*" element={<Navigate to="/" />} />
                 </Routes>
             </Router>
+            <LogBox />
         </ThemeProvider>
     );
 }
