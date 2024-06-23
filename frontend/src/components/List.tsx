@@ -1,23 +1,19 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
+import { useEffect, useState, useCallback, useMemo } from "react";
 import {
     Container,
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableRow,
     Paper,
     Button,
     Box,
-    Typography
+    Typography,
+    TableContainer
 } from '@mui/material';
+import { useReactTable, getCoreRowModel, ColumnDef } from '@tanstack/react-table';
 import { Item } from "../model/Item.ts";
 import DeleteDialog from './DeleteDialog.tsx';
 import itemService from "../service/ItemService.ts";
-import logService  from "../service/LogService.ts";
-import { useEffect, useState, useCallback } from "react";
+import logService from "../service/LogService.ts";
 
 const List: React.FC = () => {
     const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
@@ -55,6 +51,79 @@ const List: React.FC = () => {
         handleCloseDeleteDialog();
     };
 
+    const columns = React.useMemo(
+        () => [
+            {
+                Header: 'ID',
+                accessor: 'id',
+            },
+            {
+                Header: 'Description',
+                accessor: 'description',
+            },
+            {
+                Header: 'Interval',
+                accessor: 'interval',
+            },
+            {
+                Header: 'Url',
+                accessor: 'url',
+            },
+            {
+                Header: 'XPath',
+                accessor: 'xpath',
+            },
+            {
+                Header: 'Screenshot',
+                accessor: 'screenshot',
+                Cell: ({ cell: { value } }) => (value ? 'Yes' : 'No')
+            },
+            {
+                Header: 'Actions',
+                Cell: ({ row: { original } }) => (
+                    <>
+                        <Button
+                            component={Link}
+                            to={`/edit/${original.id}`}
+                            variant="contained"
+                            size="small"
+                            style={{ marginRight: 8 }}
+                        >
+                            Edit
+                        </Button>
+                        <Button
+                            variant="contained"
+                            size="small"
+                            style={{ marginRight: 8 }}
+                            onClick={() => handleOpenDeleteDialog(original)}
+                        >
+                            Delete
+                        </Button>
+                        <Button
+                            component={Link}
+                            to={`/view/${original.id}`}
+                            variant="contained"
+                            size="small"
+                        >
+                            View
+                        </Button>
+                    </>
+                ),
+            },
+        ],
+        []
+    );
+
+    const tableInstance = useTable({ columns, data: items });
+
+    const {
+        getTableProps,
+        getTableBodyProps,
+        headerGroups,
+        rows,
+        prepareRow,
+    } = tableInstance;
+
     return (
         <Container>
             <Box mt={5} mb={2}>
@@ -63,58 +132,33 @@ const List: React.FC = () => {
                 </Typography>
             </Box>
             <TableContainer component={Paper}>
-                <Table>
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>ID</TableCell>
-                            <TableCell>Description</TableCell>
-                            <TableCell>Interval</TableCell>
-                            <TableCell>Url</TableCell>
-                            <TableCell>XPath</TableCell>
-                            <TableCell>Screenshot</TableCell>
-                            <TableCell>Actions</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {items.map((item) => (
-                            <TableRow key={item.id}>
-                                <TableCell>{item.id}</TableCell>
-                                <TableCell>{item.description}</TableCell>
-                                <TableCell>{item.interval}</TableCell>
-                                <TableCell>{item.url}</TableCell>
-                                <TableCell>{item.xpath}</TableCell>
-                                <TableCell>{item.screenshot ? 'Yes' : 'No'}</TableCell>
-                                <TableCell>
-                                    <Button
-                                        component={Link}
-                                        to={`/edit/${item.id}`}
-                                        variant="contained"
-                                        size="small"
-                                        style={{ marginRight: 8 }}
-                                    >
-                                        Edit
-                                    </Button>
-                                    <Button
-                                        variant="contained"
-                                        size="small"
-                                        style={{ marginRight: 8 }}
-                                        onClick={() => handleOpenDeleteDialog(item)}
-                                    >
-                                        Delete
-                                    </Button>
-                                    <Button
-                                        component={Link}
-                                        to={`/view/${item.id}`}
-                                        variant="contained"
-                                        size="small"
-                                    >
-                                        View
-                                    </Button>
-                                </TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
+                <table {...getTableProps()} style={{ width: '100%' }}>
+                    <thead>
+                    {headerGroups.map(headerGroup => (
+                        <tr {...headerGroup.getHeaderGroupProps()}>
+                            {headerGroup.headers.map(column => (
+                                <th {...column.getHeaderProps()}>
+                                    {column.render('Header')}
+                                </th>
+                            ))}
+                        </tr>
+                    ))}
+                    </thead>
+                    <tbody {...getTableBodyProps()}>
+                    {rows.map(row => {
+                        prepareRow(row);
+                        return (
+                            <tr {...row.getRowProps()}>
+                                {row.cells.map(cell => (
+                                    <td {...cell.getCellProps()}>
+                                        {cell.render('Cell')}
+                                    </td>
+                                ))}
+                            </tr>
+                        );
+                    })}
+                    </tbody>
+                </table>
             </TableContainer>
             <Box mt={2}>
                 <Button component={Link} to="/create" variant="contained" color="primary">

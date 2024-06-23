@@ -11,6 +11,8 @@
     "update-deps": "npx npm-check-updates -u && npm install"
   },
   "dependencies": {
+    "@faker-js/faker": "^8.4.1",
+    "@tanstack/react-table": "^8.17.3",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@mui/icons-material": "^5.15.19",

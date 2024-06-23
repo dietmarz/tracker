@@ -1,23 +1,10 @@
 // src/services/ItemService.ts
 
 import {Item} from "../model/Item.ts";
+import {makeData} from "./makeFakeData.ts";
 
 class ItemService {
-    private items: Item[] = [{
-        id: 1,
-        description: "Item 1",
-        interval: 5,
-        url: "http://ausService.com/1",
-        xpath: "/html/body/div[1]",
-        screenshot: true,
-    }, {
-        id: 2,
-        description: "Item 2",
-        interval: 10,
-        url: "http://example.com/2",
-        xpath: "/html/body/div[2]",
-        screenshot: false,
-    },];
+    private items: Item[] = makeData(100);
 
     static readonly ItemNotFoundError = class extends Error {
         constructor(id: string | number) {
